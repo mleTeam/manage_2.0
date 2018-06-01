@@ -25,7 +25,7 @@
 
 <script>
 import "../static/css/styles.css"
-import { MLE_POST_ERR_OK, MLE_COOKIE, MLE_COOKIE_TIME } from '~/assets/constsUtil.js'
+import { MLE_POST_OK, MLE_COOKIE, MLE_COOKIE_TIME } from '~/assets/constsUtil.js'
 export default {
   layout: 'login',
   data() {
@@ -38,10 +38,6 @@ export default {
     }
   },
   methods: {
-//    async fetchSomething() {
-//      const ip = await this.$axios.$get('/v2/activities?page=1&rows=10')
-//      console.log(ip)
-//    },
       login() {
         let self = this
         if(self.admin.adminName == ""){
@@ -58,8 +54,8 @@ export default {
           }
         })
           .then(function (response) {
-            if( MLE_POST_ERR_OK ==  response.statuc_code) {
-              let token = response.data.accessToken
+            if( MLE_POST_OK ==  response.statuc_code) {
+              let token = response.item.accessToken
               let d = new Date()
               d.setTime(d.getTime() + (MLE_COOKIE_TIME))//cookie生效时间
               let expires = 'expires=' + d.toUTCString()
@@ -79,9 +75,5 @@ export default {
         });
       }
     }
-// ,
-//  created:function() {
-//    this.fetchSomething()
-//  }
 }
 </script>

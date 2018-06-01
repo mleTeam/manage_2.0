@@ -37,7 +37,7 @@ module.exports = {
     vendor: ['element-ui']
   },
   plugins: [
-    { src: '~plugins/element-ui'}
+    { src: '~plugins/element-ui'},'~/plugins/axios'
   ],
   modules: [
     '@nuxtjs/axios',

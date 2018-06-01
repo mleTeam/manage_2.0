@@ -9,21 +9,9 @@
       <el-aside width="240px">
         <el-menu
           :unique-opened="isUnique" >
-          <el-submenu index="1">
-            <template slot="title" >导航一</template>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-              <el-menu-item index="1-3">选项3</el-menu-item>
-              <el-menu-item index="1-4">选项4</el-menu-item>
-              <el-menu-item index="1-5">选项5</el-menu-item>
-              <el-menu-item index="1-6">选项6</el-menu-item>
-              <el-menu-item index="1-7">选项7</el-menu-item>
-              <el-menu-item index="1-8">选项8</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">导航二</template>
-              <el-menu-item index="2-1">选项1</el-menu-item>
-              <el-menu-item index="2-2">选项2</el-menu-item>
+          <el-submenu :index="String(menu.actionId)" v-for="menu in menuList" :key="menu.actionId">
+            <template slot="title" >{{ menu.actionName }}</template>
+            <el-menu-item :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -34,11 +22,20 @@
   </el-container>
 </template>
 <script>
+  import { MLE_GET_OK } from '~/assets/constsUtil.js'
   export default {
     data() {
       return {
-        isUnique: true
-      };
+        isUnique: true,
+        menuList: []
+      }
+    },
+    created() {
+        let self = this
+        this.$axios.$get('/v2/menus','')
+          .then((res) =>{
+              self.menuList = res.item
+          })
     }
   }
 </script>

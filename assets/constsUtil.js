@@ -1,6 +1,6 @@
-export const MLE_GET_ERR_OK = 200
+export const MLE_GET_OK = 200
 
-export const MLE_POST_ERR_OK = 201
+export const MLE_POST_OK = 201
 
 export const MLE_TOKEN_ERR = 401
 
