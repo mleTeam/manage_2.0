@@ -11,11 +11,20 @@
           :unique-opened="isUnique" >
           <el-submenu :index="String(menu.actionId)" v-for="menu in menuList" :key="menu.actionId">
             <template slot="title" >{{ menu.actionName }}</template>
-            <el-menu-item :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
+            <el-menu-item @click="goRoute(submenu.actionName,submenu.actionId+'',submenu.actionExternal)" :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
         <el-main style="height:790px">
+          <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+            <el-tab-pane
+              v-for="item in editableTabs"
+              :key="item.name"
+              :label="item.title"
+              :name="item.name"
+            >
+            </el-tab-pane>
+          </el-tabs>
           <nuxt/>
         </el-main>
     </el-container>
@@ -27,7 +36,9 @@
     data() {
       return {
         isUnique: true,
-        menuList: []
+        menuList: [],
+        editableTabsValue: '1',
+        editableTabs: []
       }
     },
     created() {
@@ -36,6 +47,50 @@
           .then((res) =>{
               self.menuList = res.item
           })
+    },
+    methods: {
+      goRoute(targetTitle,targetId,path) {
+        let flag = true
+        let self = this
+        self.editableTabs.forEach((tab) => {
+          if (tab.name === targetId) {
+            self.editableTabsValue = targetId
+            flag = false
+          }
+        });
+        if(flag){
+          self.addTab(targetTitle,targetId,path)
+        }
+        self.$router.push(path)
+      },
+      addTab(targetTitle,targetId,path) {
+        this.editableTabs.push({
+          title: targetTitle,
+          name: targetId,
+          content: path
+        });
+        this.editableTabsValue = targetId;
+      },
+      removeTab(targetName) {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        let path = '/home'
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+                path = nextTab.content
+              }
+            }
+          });
+          this.$router.push(path)
+        }
+
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      }
     }
   }
 </script>

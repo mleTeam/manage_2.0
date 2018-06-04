@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import "../static/css/styles.css"
+import '~/static/css/styles.css'
 import { MLE_POST_OK, MLE_COOKIE, MLE_COOKIE_TIME } from '~/assets/constsUtil.js'
 export default {
   layout: 'login',
@@ -60,12 +60,13 @@ export default {
               d.setTime(d.getTime() + (MLE_COOKIE_TIME))//cookie生效时间
               let expires = 'expires=' + d.toUTCString()
               document.cookie = MLE_COOKIE + '=' + token + '; Path=/; Domain=milibanking.com; ' + expires
+              location.href = '/home'
             }else {
               self.showErrorMessage('系统异常！')
             }
           })
           .catch(function (error) {
-            self.showErrorMessage(error.response.data.message)
+            self.showErrorMessage(error.response ? error.response.data.message : '系统异常！')
           });
       },
       showErrorMessage(msg) {

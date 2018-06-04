@@ -8,7 +8,10 @@
 export default {
   methods: {
     fetchSomething() {
-      console.log()
+      this.$axios.$get('/v2/brokerVips','')
+        .then((res) =>{
+          self.menuList = res.item
+        })
     }
   },
   created: function() {
