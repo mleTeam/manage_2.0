@@ -47,15 +47,14 @@ module.exports = {
     [
       '/v2',
       {
-        target: 'http://csmanage2.milibanking.com', // api主机
+        target: 'http://csactivity.milibanking.com:9050', // api主机
         ws: false
       }
     ]
   ],
   axios: {
-    proxy: true,
-    baseURL: 'http://csmanage2.milibanking.com'
-  },
+    baseURL: 'http://csactivity.milibanking.com:3000'
+  }
 
   // proxy: {
   //   '/app/': {

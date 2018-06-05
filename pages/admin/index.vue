@@ -43,19 +43,23 @@ export default {
             date: '2016-05-03',
             name: '王小虎',
             address: '上海市普陀区金沙江路 1516 弄'
-          }]
+          }],
+          list:[]
         }
       },
   methods: {
-    fetchSomething() {
-      this.$axios.$get('/v2/admin','')
+    getAdmins() {
+      this.$axios.$get('/v2/admins','')
         .then((res) =>{
-          self.menuList = res.item
+          console.log(res)
         })
+        .catch((err) =>{
+          console.log(err)
+        });
     }
   },
-  created: function() {
-    this.fetchSomething()
+  created() {
+    this.getAdmins()
   }
 }
 </script>

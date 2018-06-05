@@ -11,11 +11,11 @@
           :unique-opened="isUnique" >
           <el-submenu :index="String(menu.actionId)" v-for="menu in menuList" :key="menu.actionId">
             <template slot="title" >{{ menu.actionName }}</template>
-            <el-menu-item @click="goRoute(submenu.actionName,submenu.actionId+'',submenu.actionExternal)" :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
+            <el-menu-item @click="goRoute(submenu.actionName,submenu.actionId+'',submenu.actionRouter)" :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
-        <el-main style="height:790px">
+        <el-main>
           <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
             <el-tab-pane
               v-for="item in editableTabs"
