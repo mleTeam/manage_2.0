@@ -1,16 +1,19 @@
 <template>
   <el-container>
-      <el-header height="80px">
-        <span style="color: #fff;font-size: 22px">
+      <el-header height="60px">
+        <span style="color: #fff;">
           米粒儿金融管理平台2.0
         </span>
       </el-header>
     <el-container>
       <el-aside width="240px">
         <el-menu
-          :unique-opened="isUnique" >
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
+          :unique-opened="isUnique">
           <el-submenu :index="String(menu.actionId)" v-for="menu in menuList" :key="menu.actionId">
-            <template slot="title" >{{ menu.actionName }}</template>
+            <template slot="title">{{ menu.actionName }}</template>
             <el-menu-item @click="goRoute(submenu.actionName,submenu.actionId+'',submenu.actionRouter)" :index="menu.actionId + '-' + submenu.actionId" v-for="submenu in menu.actionList" :key="submenu.actionId">{{ submenu.actionName }}</el-menu-item>
           </el-submenu>
         </el-menu>
