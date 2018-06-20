@@ -47,7 +47,7 @@ module.exports = {
     [
       '/v2',
       {
-        target: 'http://csactivity.milibanking.com:9050', // api主机
+        target: 'http://csmanage2.milibanking.com', // api主机
         ws: false
       }
     ]

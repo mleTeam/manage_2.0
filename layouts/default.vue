@@ -19,7 +19,7 @@
         </el-menu>
       </el-aside>
         <el-main>
-          <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+          <el-tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab"  @tab-click="clickTab" >
             <el-tab-pane
               v-for="item in editableTabs"
               :key="item.name"
@@ -93,6 +93,15 @@
 
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      },
+      clickTab() {
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        tabs.forEach((tab, index) => {
+          if (tab.name === activeName) {
+            this.$router.push(tab.content)
+          }
+        })
       }
     }
   }

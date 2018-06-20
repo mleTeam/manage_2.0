@@ -1,6 +1,6 @@
 <template>
     <div id="score-index">
-      <el-form :inline="true"  class="demo-form-inline" size="small">
+      <el-form inline class="demo-form-inline" size="small">
         <el-form-item label="用户ID">
           <el-input v-model="userId" placeholder="用户ID"></el-input>
         </el-form-item>
@@ -20,19 +20,19 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="getAdmins">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
         </el-form-item><br>
-        <el-form-item label="开始创建时间">
+        <el-form-item label="起始创建时间">
           <el-date-picker
-            v-model="createTimeStart"
+            v-model="createStartTime"
             type="datetime"
-            placeholder="开始创建时间"
+            placeholder="起始创建时间"
             value-format="yyyy-MM-dd HH:mm:ss">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束创建时间">
           <el-date-picker
-            v-model="createTimeEnd"
+            v-model="createEndTime"
             type="datetime"
             placeholder="结束创建时间"
             value-format="yyyy-MM-dd HH:mm:ss">
@@ -78,12 +78,13 @@
           prop="scoreType"
           label="类型"
           width="80"
+          align="center"
           :formatter="getScoreTypeString">
         </el-table-column>
         <el-table-column
           prop="scoreName"
           label="积分描述"
-          show-overflow-tooltip="tooltip">
+          show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="createTime"
@@ -111,7 +112,7 @@
 </template>
 
 <script>
-  import { MLE_GET_OK,formatDate } from '~/assets/constsUtil.js'
+  import { MLE_GET_OK } from '~/assets/constsUtil.js'
   import moment from 'moment'
   export default {
     data() {
@@ -123,18 +124,24 @@
         score: '',
         userPhone: '',
         scoreType: '',
-        createTimeStart: '',
-        createTimeEnd: '',
+        createStartTime: '',
+        createEndTime: '',
         list: [],
         loading: true,
         totalScore:'',
         totalUsed: '',
-        totalSurplus: '',
-        tooltip:true
+        totalSurplus: ''
       }
     },
     methods: {
-      getAdmins() {
+      //将页数改为1后执行获取列表方法
+      search() {
+        let self = this
+        self.page = 1
+        self.getList()
+      },
+      //根据查询参数获取列表信息
+      getList() {
         let self = this
         self.loading = true
         let para =  {
@@ -144,8 +151,8 @@
           score: self.score,
           userPhone: self.userPhone,
           scoreType: self.scoreType,
-          createTimeStart: self.createTimeStart,
-          createTimeEnd: self.createTimeEnd
+          createStartTime: self.createStartTime,
+          createEndTime: self.createEndTime
         }
         this.$axios.$get('/v2/scores',{
           params:para
@@ -164,6 +171,7 @@
         self.getTotalUsed(para)
         self.getTotalSurplus(para)
       },
+      //根据查询参数获取总获得积分
       getTotalScore(para){
         let self = this
         this.$axios.$get('/v2/scores/totalScore',{
@@ -175,6 +183,7 @@
             }
           })
       },
+      //根据查询参数获取总使用积分
       getTotalUsed(para){
         let self = this
         this.$axios.$get('/v2/scores/totalUsed',{
@@ -186,6 +195,7 @@
             }
           })
       },
+      //根据查询参数获取总剩余积分
       getTotalSurplus(para){
         let self = this
         this.$axios.$get('/v2/scores/totalSurplus',{
@@ -197,6 +207,7 @@
             }
           })
       },
+      //根据查询参数将列表导出为Excel
       exportList() {
         let self = this
         let para =  {
@@ -206,8 +217,8 @@
           score: self.score,
           userPhone: self.userPhone,
           scoreType: self.scoreType,
-          createTimeStart: self.createTimeStart,
-          createTimeEnd: self.createTimeEnd
+          createStartTime: self.createStartTime,
+          createEndTime: self.createEndTime
         }
         this.$axios.$get('/v2/scores/export', {
           params: para,
@@ -216,12 +227,14 @@
           }
         })
       },
+      //显示错误信息 (信息内容)
       showErrorMessage(msg) {
         this.$message({
           message: msg,
           type: 'error'
         });
       },
+      //格式化类型列内容 (行对象row，列对象column，单元格值cellValue，索引index)
       getScoreTypeString(row,column){
         switch(row.scoreType) {
           case 1:
@@ -238,6 +251,7 @@
             break
         }
       },
+      //格式化日期 (行对象row，列对象column，单元格值cellValue，索引index)
       dateFormat(row, column) {
         let date = row[column.property];
         if (date) {
@@ -245,19 +259,22 @@
         }
         return ""
       },
+      //分页选择每页条数回调函数 (条数)
       sizeChange(size) {
         let self = this
         self.limit = size
-        self.getAdmins()
+        self.page = 1
+        self.getList()
       },
+      //分页选择页码回调函数 (当前选择页码)
       currentChange(current) {
         let self = this
         self.page = current
-        self.getAdmins()
+        self.getList()
       }
     },
     created() {
-      this.getAdmins()
+      this.getList()
     }
   }
 </script>

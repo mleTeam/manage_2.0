@@ -2,6 +2,10 @@ export const MLE_GET_OK = 200
 
 export const MLE_POST_OK = 200
 
+export const MLE_PUT_OK = 200
+
+export const MLE_DELETE_OK = 200
+
 export const MLE_TOKEN_ERR = 401
 
 export const MLE_RULE_ERR = 403
