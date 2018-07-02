@@ -26,7 +26,8 @@
           <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
-      <el-button type="info" icon="el-icon-download" size="small">导出</el-button><br><br>
+      <el-button type="info" icon="el-icon-download" size="small">导出</el-button>
+      <el-button type="success" icon="el-icon-plus" size="small">新增</el-button><br><br>
       <el-table
         v-loading="loading"
         :data="list"
@@ -132,7 +133,7 @@
           prop="goodsCreatetime"
           label="创建时间"
           width="160"
-          :formatter="dateFormat"  >
+          :formatter="this.common.elTableDateFormat"  >
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -141,7 +142,7 @@
           <template slot-scope="scope" >
             <el-button
               size="mini"
-              type="info" v-if="scope.row.goodsState == 1">下架</el-button>
+              type="info" v-if="scope.row.goodsState == 1" @click="">下架</el-button>
             <el-button
               size="mini"
               type="primary" v-if="scope.row.goodsState == 2">上架</el-button>
@@ -172,7 +173,6 @@
 
 <script>
   import { MLE_GET_OK,MLE_PUT_OK,MLE_POST_OK } from '~/assets/constsUtil.js'
-  import moment from 'moment'
   export default {
     data() {
       return {
@@ -238,13 +238,6 @@
         let self = this
         self.searchParam.page = current
         self.getList()
-      },
-      //日期格式化函数 (行对象row，列对象column，单元格值cellValue，索引index)
-      dateFormat(row, column,cellValue) {
-        if (cellValue) {
-          return moment(cellValue).format("YYYY-MM-DD HH:mm:ss")
-        }
-        return ""
       },
       typeFormat(row) {
         switch(row.goodsType) {

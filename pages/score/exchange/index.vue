@@ -149,7 +149,7 @@
           prop="exchangeCreatetime"
           label="创建时间"
           width="160"
-          :formatter="dateFormat"  >
+          :formatter="this.common.elTableDateFormat"  >
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -363,13 +363,6 @@
         let self = this
         self.page = current
         self.getList()
-      },
-      //日期格式化函数 (行对象row，列对象column，单元格值cellValue，索引index)
-      dateFormat(row, column,cellValue) {
-        if (cellValue) {
-          return moment(cellValue).format("YYYY-MM-DD HH:mm:ss")
-        }
-        return ""
       },
       typeFormat(row) {
         switch(row.exchangeGoodsType) {

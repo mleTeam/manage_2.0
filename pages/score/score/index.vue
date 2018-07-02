@@ -89,12 +89,12 @@
         <el-table-column
           prop="createTime"
           label="创建时间"
-          :formatter="dateFormat"  >
+          :formatter="this.common.elTableDateFormat"  >
         </el-table-column>
         <el-table-column
           prop="modifyTime"
           label="修改时间"
-          :formatter="dateFormat"  >
+          :formatter="this.common.elTableDateFormat"  >
         </el-table-column>
       </el-table><br>
       <el-pagination
@@ -113,7 +113,6 @@
 
 <script>
   import { MLE_GET_OK } from '~/assets/constsUtil.js'
-  import moment from 'moment'
   export default {
     data() {
       return {
@@ -250,14 +249,6 @@
             return '抽奖'
             break
         }
-      },
-      //格式化日期 (行对象row，列对象column，单元格值cellValue，索引index)
-      dateFormat(row, column) {
-        let date = row[column.property];
-        if (date) {
-          return moment(date).format("YYYY-MM-DD HH:mm:ss")
-        }
-        return ""
       },
       //分页选择每页条数回调函数 (条数)
       sizeChange(size) {

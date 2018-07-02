@@ -37,7 +37,7 @@ module.exports = {
     vendor: ['element-ui']
   },
   plugins: [
-    { src: '~plugins/element-ui'},'~/plugins/axios'
+    { src: '~plugins/element-ui'},{ src:'~/plugins/axios'},{ src: '~/plugins/common' }
   ],
   modules: [
     '@nuxtjs/axios',
@@ -47,7 +47,7 @@ module.exports = {
     [
       '/v2',
       {
-        target: 'http://csmanage2.milibanking.com', // api主机
+        target: 'http://csactivity.milibanking.com:9050', // api主机
         ws: false
       }
     ]
